@@ -17,7 +17,7 @@ func ReadData(fileName string) (map[string][]interface{}, map[string][]string) {
 		panic(err)
 	}
 
-	data, err := os.Open("data.yson")
+	data, err := os.Open("data.ydb")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -67,7 +67,7 @@ func ReadData(fileName string) (map[string][]interface{}, map[string][]string) {
 	}
 
 	data.Close()
-	openData("data.yson")
+	openData("data.ydb")
 	return res, layout
 }
 
