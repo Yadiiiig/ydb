@@ -4,55 +4,30 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"net"
 	"reflect"
 	"strings"
 )
 
-func HandleQuery(rec []byte) {
+func HandleQuery(rec []byte, connection net.Conn) {
 	query := base{}
 	userB := bytes.NewReader(rec)
-	m := map[string]interface{}{}
 
 	if err := json.NewDecoder(userB).Decode(&query); err != nil {
 		panic(err)
 	}
 
-	fmt.Println(len(query.Data))
+	//fmt.Println(len(query.Action))
 
-	tempRowStruct := make([]reflect.StructField, 0, len(layout[query.Table]))
-
-	for _, spec := range layout[query.Table] {
-		tempRowStruct = append(tempRowStruct, reflect.StructField{
-			Name: strings.Title(spec),
-			Type: reflect.TypeOf(""),
-			Tag:  reflect.StructTag(fmt.Sprintf(`json:"%s"`, spec)),
-		})
+	switch query.Action {
+	case "insert":
+		Insert(query, connection)
+	case "select":
+		Select(query, connection)
+	default:
+		fmt.Println("Not implemented yet")
 	}
-	rowStruct := reflect.StructOf(tempRowStruct)
 
-	for _, v := range query.Data {
-		if err := json.Unmarshal([]byte(v), &m); err != nil {
-			panic(err)
-		}
-
-		for k := range m {
-			if !rowExists(k, query.Table) {
-				delete(m, k)
-			}
-		}
-
-		temp, err := json.Marshal(m)
-		if err != nil {
-			fmt.Println(err)
-		}
-
-		obj := reflect.New(rowStruct).Interface()
-		if err := json.Unmarshal([]byte(temp), &obj); err != nil {
-			fmt.Println(err)
-		}
-
-		appendDatabase(query.Table, obj, m)
-	}
 }
 
 func appendDatabase(tableName string, row interface{}, rawRow map[string]interface{}) {

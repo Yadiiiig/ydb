@@ -61,7 +61,7 @@ func handleClientRequest(con net.Conn) {
 			return
 		}
 
-		HandleQuery(clientRequest)
-		con.Write([]byte("done" + "\n"))
+		HandleQuery(clientRequest, con)
+		//con.Write([]byte("done" + "\n"))
 	}
 }

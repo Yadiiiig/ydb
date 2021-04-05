@@ -5,7 +5,7 @@
             {"name": "firstname", "type": "string"},
             {"name": "lastname", "type": "string"},
             {"name": "email", "type": "string"},
-            {"name": "password", "type": "string"}
+            {"name": "company", "type": "string"}
         ],
         "posts": [
             {"name": "id", "type": "string"},
