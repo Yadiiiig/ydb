@@ -4,8 +4,7 @@ type base struct {
 	Table         string        `json:"table"`
 	Action        string        `json:"action"`
 	Data          []string      `json:"data"` // Needs to be replaced
-	selectDetails selectDetails `json:"selectDetails"`
-	Select        []sValues     `json:"selectQ"`
+	SelectDetails selectDetails `json:"selectDetails"`
 }
 
 // type insertQ struct {
@@ -14,14 +13,16 @@ type base struct {
 
 // Everything for select queries
 type selectDetails struct {
-	Action string  `json:"action"`
-	Fields sFields `json:"fields"`
+	Action string    `json:"action"` // Need to implement
+	Fields sFields   `json:"fields"`
+	Values []sValues `json:"values"`
 	//Select []selectV `json:"selectV"`
 }
 
 type sFields struct {
-	Amount int      `json:"amount"`
-	Fields []string `json:"fields"`
+	Everything string   `json:"everything"`
+	Amount     int      `json:"amount"`
+	Fields     []string `json:"fields"`
 }
 
 type sValues struct {
