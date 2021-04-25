@@ -1,4 +1,4 @@
-package main
+package reader
 
 import (
 	"bufio"
@@ -8,16 +8,38 @@ import (
 	"os"
 	"reflect"
 	"strings"
+
+	utils "yadiiig.dev/ydb/internals/utils"
 )
 
-func ReadData(fileName string) (map[string][]interface{}, map[string][]string) {
+type DataContainer struct {
+	Tables map[string][]FieldSpec `json:"tables"`
+}
+
+type FieldSpec struct {
+	Name string `json:"name"`
+	Type string `json:"type"`
+}
+
+type TempData struct {
+	Name string
+	Row  string
+}
+
+type Drivers struct {
+	Database map[string][]interface{}
+	Layout   map[string][]string
+	OpenFile *os.File
+}
+
+func ReadData(structure string, ydb string) *Drivers {
 	var temp_data []TempData
-	file, err := os.OpenFile(fileName, os.O_RDONLY, 0)
+	file, err := os.OpenFile(structure, os.O_RDONLY, 0)
 	if err != nil {
 		panic(err)
 	}
 
-	data, err := os.Open("data.ydb")
+	data, err := os.Open(ydb)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -46,7 +68,7 @@ func ReadData(fileName string) (map[string][]interface{}, map[string][]string) {
 		for _, spec := range container.Tables[table] {
 			rowFields = append(rowFields, reflect.StructField{
 				Name: strings.Title(spec.Name),
-				Type: getType(spec.Type),
+				Type: utils.GetType(spec.Type),
 				Tag:  reflect.StructTag(fmt.Sprintf(`json:"%s"`, spec.Name)),
 			})
 			layout[table] = append(layout[table], spec.Name)
@@ -67,41 +89,11 @@ func ReadData(fileName string) (map[string][]interface{}, map[string][]string) {
 	}
 
 	data.Close()
-	openData("data.ydb")
-	return res, layout
-}
+	openFile := utils.OpenData(ydb)
 
-func getType(ty string) reflect.Type {
-	switch ty {
-	case "string":
-		return reflect.TypeOf("")
-
-	case "int":
-		return reflect.TypeOf(int(0))
-
-	default:
-		return nil
+	return &Drivers{
+		Database: res,
+		Layout:   layout,
+		OpenFile: openFile,
 	}
-}
-
-func openData(file string) {
-	var err error
-	dataFile, err = os.OpenFile(file, os.O_APPEND|os.O_WRONLY, 0644)
-	if err != nil {
-		panic(err)
-	}
-}
-
-type DataContainer struct {
-	Tables map[string][]FieldSpec `json:"tables"`
-}
-
-type FieldSpec struct {
-	Name string `json:"name"`
-	Type string `json:"type"`
-}
-
-type TempData struct {
-	Name string
-	Row  string
 }

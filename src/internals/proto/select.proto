@@ -1,0 +1,22 @@
+syntax = "proto3";
+option go_package = "yadiiig.dev/ydb/internals/proto";
+
+service Select {
+    rpc SelectQuery (SelectValues) returns (SelectResponse) {}
+}
+
+message SelectValues {
+    string Table = 1;
+    repeated string Fields = 2;
+    repeated Values Values = 3;
+}
+
+message Values {
+    string Operator = 1;
+    string Row = 2;
+    string Value = 3;
+}
+
+message SelectResponse {
+    string Result = 1;
+}
