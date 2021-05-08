@@ -10,10 +10,10 @@ import (
 
 type selectService struct {
 	pb.UnimplementedSelectServer
-	Drivers reader.Drivers
+	Drivers *reader.Drivers
 }
 
-func NewSelectService(d reader.Drivers) *selectService {
+func NewSelectService(d *reader.Drivers) *selectService {
 	return &selectService{
 		Drivers: d,
 	}

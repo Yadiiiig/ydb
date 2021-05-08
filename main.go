@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net"
 
@@ -9,11 +10,12 @@ import (
 )
 
 func main() {
-	d := reader.ReadData("../idea.json", "../data.ydb")
+	d := reader.ReadData("./idea.json", "./data.ydb")
+	fmt.Println("Database is ready to Go.")
 	lis, err := net.Listen("tcp", ":8008")
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-	handler.GrpcInit(lis, *d)
+	handler.NewGrpcServer(lis, d)
 }

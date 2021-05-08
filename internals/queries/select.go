@@ -10,7 +10,7 @@ import (
 	"yadiiig.dev/ydb/internals/reader"
 )
 
-func Select(d reader.Drivers, in *pb.SelectValues) string {
+func Select(d *reader.Drivers, in *pb.SelectValues) string {
 	fmt.Println(in)
 
 	result := []interface{}{}

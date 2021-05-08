@@ -1,0 +1,25 @@
+syntax = "proto3";
+option go_package = "yadiiig.dev/ydb/internals/proto";
+
+service Insert {
+    rpc InsertQuery (InsertValues) returns (InsertResponse) {}
+    rpc InsertQueryMultiple (InsertValuesMultiple) returns (InsertResponse) {}
+}
+
+message InsertValues {
+    string Table = 1;
+    repeated IValues Values = 2;
+}
+
+message InsertValuesMultiple {
+    repeated InsertValues Values = 1;
+}
+
+message IValues {
+    string Row = 1;
+    string Value = 2;
+}
+
+message InsertResponse {
+    bool Result = 1;
+}

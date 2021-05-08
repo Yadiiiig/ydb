@@ -1,22 +1,26 @@
 package main
 
 import (
+	"fmt"
 	"testing"
 
 	pb "yadiiig.dev/ydb/internals/proto"
 )
 
-var clients *Clients
+// var clients *Clients
 var ctx *Ctx
+var selectService *SelectService
+var insertService *InsertService
 
 func init() {
-	connection := ConnectionSetup("localhost:8008")
-	//defer connection.Close()
+	c := ConnectionSetup("localhost:8008")
+	//defer c.Close()
 
-	clients = ClientSetup(connection)
+	selectService = NewSelectService(c)
+	insertService = NewInserService(c)
 
 	ctx = ContextSetup()
-	//defer ctx.Cancel()
+	//fmt.Println("do i even execute?")
 }
 
 // func BenchmarkSelect(b *testing.B) {
@@ -24,5 +28,16 @@ func init() {
 // }
 
 func BenchmarkSelectSpec(b *testing.B) {
-	ctx.SelectSpec(clients.Select, "users", []string{"*"}, []*pb.Values{{Operator: "=", Row: "firstname", Value: "Piper"}})
+	r, err := ctx.SelectSpec(selectService.Select, "users", []string{"*"}, []*pb.Values{{Operator: "=", Row: "firstname", Value: "Piper"}})
+	fmt.Println(r, err)
+	//ctx.Select(clients.Select, "users", []string{"*"})
+}
+
+func BenchmarkInsert(b *testing.B) {
+	ctx.Insert(insertService.Insert, "posts", []*pb.IValues{
+		{Row: "userid", Value: "5"},
+		{Row: "title", Value: "party"},
+		{Row: "body", Value: "sick party"},
+		{Row: "noexist", Value: "sick party"},
+	})
 }

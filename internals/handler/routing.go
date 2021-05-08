@@ -10,23 +10,16 @@ import (
 	reader "yadiiig.dev/ydb/internals/reader"
 )
 
-type grcpDetails struct {
-	Server *grpc.Server
-	reader.Drivers
-}
+func NewGrpcServer(lis net.Listener, d *reader.Drivers) {
+	s := grpc.NewServer()
 
-func GrpcInit(lis net.Listener, d reader.Drivers) {
-	grpcServer := grpc.NewServer()
-	gd := grcpDetails{grpcServer, d}
+	selectService := NewSelectService(d)
+	insertService := NewInsertService(d)
 
-	gd.selectQuery()
+	pb.RegisterSelectServer(s, selectService)
+	pb.RegisterInsertServer(s, insertService)
 
-	if err := grpcServer.Serve(lis); err != nil {
+	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
-}
-
-func (g *grcpDetails) selectQuery() {
-	service := NewSelectService(g.Drivers)
-	pb.RegisterSelectServer(g.Server, service)
 }
