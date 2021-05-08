@@ -10,9 +10,7 @@ import (
 	utils "yadiiig.dev/ydb/internals/utils"
 )
 
-func Insert(d *reader.Drivers, in *pb.InsertValues) error {
-	//values := in.GetValues()
-	//m := map[string]interface{}{}
+func Insert(d *reader.Drivers, in *pb.InsertValues) (bool, error) {
 	tempRowStruct := make([]reflect.StructField, 0, len(d.Layout[in.Table]))
 
 	for _, spec := range d.Layout[in.GetTable()] {
@@ -32,55 +30,8 @@ func Insert(d *reader.Drivers, in *pb.InsertValues) error {
 		}
 	}
 	d.Database[in.GetTable()] = append(d.Database[in.GetTable()], row)
-	utils.WriteRow(in.Table, row, d.Layout[in.Table], d.OpenFile)
-	//appendDatabase(query.Table, obj, m)
-	// tempString := ""
-	// tempString += `"Id":\"50x",\`
-	// for _, k := range in.GetValues() {
-	// 	tempString += fmt.Sprintf(`"%s":\"%s",\`, strings.Title(k.GetRow()), k.GetValue())
-	// }
-	// stringValues := fmt.Sprintf("{%s}", strings.TrimSuffix(tempString, `,\`))
-	// fmt.Println(stringValues)
-
-	// temp, err := json.Marshal(stringValues)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// }
-
-	// obj := reflect.New(rowStruct).Interface()
-	// if err := json.Unmarshal(temp, &obj); err != nil {
-	// 	fmt.Println(err)
-	// }
-
-	// fmt.Println(obj)
-
-	// for _, k := range values {
-	// 	utils.RowExists(k.Row, d.Layout)
-	// 	delete(values, k)
-	// }
-
-	// for _, v := range query.Data {
-	// 	if err := json.Unmarshal([]byte(v), &m); err != nil {
-	// 		panic(err)
-	// 	}
-
-	// 	for k := range m {
-	// 		if !rowExists(k, d.Layout) {
-	// 			delete(m, k)
-	// 		}
-	// 	}
-
-	// temp, err := json.Marshal(m)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// }
-
-	// obj := reflect.New(rowStruct).Interface()
-	// if err := json.Unmarshal([]byte(temp), &obj); err != nil {
-	// 	fmt.Println(err)
-	// }
-
-	// 	appendDatabase(query.Table, obj, m)
-	// }
-	return nil
+	if err := utils.WriteRow(in.Table, row, d.Layout[in.Table], d.OpenFile); err != nil {
+		return false, err
+	}
+	return true, nil
 }

@@ -20,10 +20,10 @@ func NewInsertService(d *reader.Drivers) *insertService {
 }
 
 func (i *insertService) InsertQuery(ctx context.Context, in *pb.InsertValues) (*pb.InsertResponse, error) {
-	_ = q.Insert(i.Drivers, in)
+	r, err := q.Insert(i.Drivers, in)
 	return &pb.InsertResponse{
-		Result: true,
-	}, nil
+		Result: r,
+	}, err
 }
 
 // type insertService struct {
