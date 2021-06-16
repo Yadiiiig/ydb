@@ -24,13 +24,17 @@ The database currently supports basic functionality:
 
 * Allowing integers (This shouldn't take that long to implement)
 * Adding logging
+
 Starting on making a few drivers:
+
 * Go
 * Python
 * Java
 * Lua
 * C#/.NET
+
 Creating a local dashboard to:
+
 * View, edit, delete data manually
 * Create new database
 * Create new tables
