@@ -5,6 +5,7 @@ import (
 	"reflect"
 	"strings"
 
+	"github.com/google/uuid"
 	pb "yadiiig.dev/ydb/internals/proto"
 	"yadiiig.dev/ydb/internals/reader"
 	utils "yadiiig.dev/ydb/internals/utils"
@@ -29,6 +30,12 @@ func Insert(d *reader.Drivers, in *pb.InsertValues) (bool, error) {
 			v.SetString(i.Value)
 		}
 	}
+
+	v := reflect.ValueOf(row).Elem().FieldByName("Id")
+	if v.IsValid() {
+		v.SetString(uuid.New().String())
+	}
+
 	d.Database[in.GetTable()] = append(d.Database[in.GetTable()], row)
 	if err := utils.WriteRow(in.Table, row, d.Layout[in.Table], d.OpenFile); err != nil {
 		return false, err

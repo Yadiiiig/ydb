@@ -12,8 +12,8 @@ message SelectValues {
 }
 
 message SValues {
-    string Operator = 1;
-    string Row = 2;
+    string Row = 1;
+    string Operator = 2;
     string Value = 3;
 }
 

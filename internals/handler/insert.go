@@ -25,19 +25,3 @@ func (i *insertService) InsertQuery(ctx context.Context, in *pb.InsertValues) (*
 		Result: r,
 	}, err
 }
-
-// type insertService struct {
-// 	pb.UnimplementedSelectServer
-// 	Drivers reader.Drivers
-// }
-
-// func NewInsertService(d reader.Drivers) *selectService {
-// 	return &selectService{
-// 		Drivers: d,
-// 	}
-// }
-
-// func (s *selectService) InsertQuery(ctx context.Context, in *pb.SelectValues) (*pb.SelectResponse, error) {
-// 	result := q.Insert(s.Drivers, in)
-// 	return &pb.SelectResponse{Result: result}, nil
-// }

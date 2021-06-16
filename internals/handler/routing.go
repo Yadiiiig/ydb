@@ -15,9 +15,13 @@ func NewGrpcServer(lis net.Listener, d *reader.Drivers) {
 
 	selectService := NewSelectService(d)
 	insertService := NewInsertService(d)
+	deleteService := NewDeleteService(d)
+	updateService := NewUpdateService(d)
 
 	pb.RegisterSelectServer(s, selectService)
 	pb.RegisterInsertServer(s, insertService)
+	pb.RegisterDeleteServer(s, deleteService)
+	pb.RegisterUpdateServer(s, updateService)
 
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)

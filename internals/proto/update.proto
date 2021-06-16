@@ -1,0 +1,29 @@
+syntax = "proto3";
+option go_package = "yadiiig.dev/ydb/internals/proto";
+
+service Update {
+	rpc UpdateQuery (UpdateValues) returns (UpdateResponse) {} 
+}
+
+message UpdateValues {
+	string Table = 1;
+	repeated MatchValues Matchers = 2;
+	repeated UValues Values = 3;
+}
+
+message MatchValues {
+	string Row = 1;
+	string Operator = 2;
+	string Value = 3;
+}
+
+message UValues {
+	string Row = 1;
+	string Value = 2;
+}
+
+
+message UpdateResponse {
+	bool Result = 1;
+	int32 Amount = 2;
+}

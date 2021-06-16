@@ -1,2 +1,4 @@
 ydb.exe
-data.ydb
+ydb
+test-env/
+client_testing/

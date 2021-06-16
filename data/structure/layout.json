@@ -1,0 +1,17 @@
+{
+    "tables": {
+        "users": [
+            {"name": "id", "type": "string"},
+            {"name": "firstname", "type": "string"},
+            {"name": "lastname", "type": "string"},
+            {"name": "email", "type": "string"},
+            {"name": "company", "type": "string"}
+        ],
+        "posts": [
+            {"name": "id", "type": "string"},
+            {"name": "userid", "type": "string"},
+            {"name": "title", "type": "string"},
+            {"name": "body", "type": "string"}
+        ]
+    }
+}

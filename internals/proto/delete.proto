@@ -1,0 +1,22 @@
+syntax = "proto3";
+option go_package = "yadiiig.dev/ydb/internals/proto";
+
+service Delete {
+    rpc DeleteQuery (DeleteValues) returns (DeleteResponse) {}
+}
+
+message DeleteValues {
+    string Table = 1;
+    repeated DValues Values = 3;
+}
+
+message DValues {
+    string Row = 1;
+    string Operator = 2;
+    string Value = 3;
+}
+
+message DeleteResponse {
+    bool Result = 1;
+    int32 Amount = 2;
+}
