@@ -24,6 +24,7 @@ The database currently supports basic functionality:
 
 * Allowing integers (This shouldn't take that long to implement)
 * Adding logging
+* Custom Decoder so .ydb files aren't actually just json file without the .json extension (same for structure)
 
 Starting on making a few drivers:
 

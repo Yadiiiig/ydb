@@ -24,7 +24,7 @@ func BackgroundUpdating(d *reader.Drivers) {
 			} else {
 				a += 1
 			}
-			time.Sleep(1 * time.Second)
+			time.Sleep(60 * time.Second)
 		}
 	}()
 }
