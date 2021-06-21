@@ -25,7 +25,9 @@ func ExitHandler(d *reader.Drivers) {
 		<-c
 		fmt.Println()
 		log.Println("Do not force quit right now. You're files are still updating!")
-		utils.UpdateFile(d.OpenFile, d.Database, d.Layout, d.Path)
+		if d.Tracker != 0 {
+			utils.UpdateFile(d.OpenFile, d.Database, d.Layout, d.Path)
+		}
 		os.Exit(0)
 	}()
 }
