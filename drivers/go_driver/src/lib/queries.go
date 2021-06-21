@@ -1,7 +1,7 @@
-package main
+package lib
 
 import (
-	pb "yadiiig.dev/ydb/go-driver/proto"
+	pb "yadiiig.dev/ydb/go_driver/src/lib/proto"
 )
 
 type Query struct {
@@ -10,7 +10,7 @@ type Query struct {
 	InsertValues interface{}
 }
 
-func (s TableQuery) insert(values interface{}) *Query {
+func (s TableQuery) Insert(values interface{}) *Query {
 	return &Query{
 		QueryType:    "insert",
 		Details:      s,
@@ -18,7 +18,7 @@ func (s TableQuery) insert(values interface{}) *Query {
 	}
 }
 
-func (ctx Ctx) Insert(ec pb.InsertClient, t string, v []*pb.IValues) (bool, error) {
+func (ctx Ctx) InsertQuery(ec pb.InsertClient, t string, v []*pb.IValues) (bool, error) {
 	r, err := ec.InsertQuery(ctx.Context, &pb.InsertValues{Table: t, Values: v})
 	return r.GetResult(), err
 }

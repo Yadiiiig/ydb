@@ -1,5 +1,9 @@
 package main
 
+import (
+	ydb "yadiiig.dev/ydb/go_driver/src/lib"
+)
+
 type User struct {
 	ID        string
 	Firstname string
@@ -9,7 +13,7 @@ type User struct {
 }
 
 func main() {
-	db := connect("127.0.0.1:8008")
+	db := ydb.Connect("127.0.0.1:8008")
 
 	user := User{
 		Firstname: "Foo",
@@ -18,5 +22,5 @@ func main() {
 		Company:   "dev/null",
 	}
 
-	db.table("users").insert(user).run()
+	db.Table("users").Insert(user).Run()
 }

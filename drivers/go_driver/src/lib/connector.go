@@ -1,4 +1,4 @@
-package main
+package lib
 
 import (
 	"context"
@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"google.golang.org/grpc"
-	pb "yadiiig.dev/ydb/go-driver/proto"
+	pb "yadiiig.dev/ydb/go_driver/src/lib/proto"
 )
 
 type Connection struct {
@@ -27,19 +27,19 @@ type Ctx struct {
 	Cancel  context.CancelFunc
 }
 
-func connect(address string) *Connection {
+func Connect(address string) *Connection {
 	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}
 	return &Connection{
 		Conn:     conn,
-		Services: serviceSetup(conn),
-		Ctx:      contextSetup(),
+		Services: ServiceSetup(conn),
+		Ctx:      ContextSetup(),
 	}
 }
 
-func serviceSetup(c *grpc.ClientConn) *Services {
+func ServiceSetup(c *grpc.ClientConn) *Services {
 	return &Services{
 		selectService: pb.NewSelectClient(c),
 		insertService: pb.NewInsertClient(c),
@@ -48,7 +48,7 @@ func serviceSetup(c *grpc.ClientConn) *Services {
 	}
 }
 
-func contextSetup() *Ctx {
+func ContextSetup() *Ctx {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	return &Ctx{
 		Context: ctx,
