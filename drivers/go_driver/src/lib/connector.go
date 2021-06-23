@@ -2,7 +2,6 @@ package lib
 
 import (
 	"context"
-	"log"
 	"time"
 
 	"google.golang.org/grpc"
@@ -27,16 +26,16 @@ type Ctx struct {
 	Cancel  context.CancelFunc
 }
 
-func Connect(address string) *Connection {
+func Connect(address string) (*Connection, error) {
 	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
 	if err != nil {
-		log.Fatalf("did not connect: %v", err)
+		return nil, err
 	}
 	return &Connection{
 		Conn:     conn,
 		Services: ServiceSetup(conn),
 		Ctx:      ContextSetup(),
-	}
+	}, nil
 }
 
 func ServiceSetup(c *grpc.ClientConn) *Services {

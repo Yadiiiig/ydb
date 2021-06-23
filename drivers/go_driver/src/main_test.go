@@ -9,7 +9,7 @@ import (
 var db *ydb.Connection
 
 func init() {
-	db = ydb.Connect("127.0.0.1:8008")
+	db, _ = ydb.Connect("127.0.0.1:8008")
 }
 
 func BenchmarkInsert(b *testing.B) {
