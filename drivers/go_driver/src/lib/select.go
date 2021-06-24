@@ -7,7 +7,6 @@ import (
 )
 
 type SelectQuery struct {
-	QueryType   string
 	Details     *TableQuery
 	Rows        []string
 	Limit       int
@@ -17,10 +16,9 @@ type SelectQuery struct {
 
 func (s TableQuery) Select(dest interface{}, tables ...string) *SelectQuery {
 	return &SelectQuery{
-		QueryType: "select",
-		Details:   &s,
-		Rows:      tables,
-		CastDest:  dest,
+		Details:  &s,
+		Rows:     tables,
+		CastDest: dest,
 	}
 }
 

@@ -47,4 +47,24 @@ func main() {
 	for _, v := range users {
 		fmt.Println(v)
 	}
+
+	rd, err := db.Table("users").Delete([][]string{
+		{"firstname", "=", "Foo"},
+	}).Run()
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(rd)
+
+	var test []User
+	err = db.Table("users").Select(&test).Where([][]string{
+		{"firstname", "=", "Foo"},
+	}).Run()
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	for _, v := range test {
+		fmt.Println(v)
+	}
 }

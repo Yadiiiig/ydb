@@ -5,7 +5,6 @@ import (
 )
 
 type InsertQuery struct {
-	QueryType    string
 	Details      *TableQuery
 	InsertValues []*pb.IValues
 }
@@ -18,7 +17,6 @@ func (s TableQuery) Insert(values interface{}) *InsertQuery {
 		vals = append(vals, tmp)
 	}
 	return &InsertQuery{
-		QueryType:    "insert",
 		Details:      &s,
 		InsertValues: vals,
 	}

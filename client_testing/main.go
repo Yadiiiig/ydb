@@ -43,8 +43,8 @@ func main() {
 
 	// selectService := NewSelectService(c)
 	// insertService := NewInsertService(c)
-	// deleteService := NewDeleteService(c)
-	updateService := NewUpdateService(c)
+	deleteService := NewDeleteService(c)
+	// updateService := NewUpdateService(c)
 
 	ctx := ContextSetup()
 	defer ctx.Cancel()
@@ -63,16 +63,16 @@ func main() {
 	// fmt.Println(resQ)
 
 	// fmt.Println("Updating yadiiiig's company to yadiiiig's inc. (using firstname and email")
-	ctx.Update(updateService.Update, "users",
-		[]*pb.MatchValues{
-			{Row: "firstname", Operator: "=", Value: "Yadiiiig"},
-			{Row: "email", Operator: "=", Value: "yadiiiig.dev@gmail.com"},
-		},
-		[]*pb.UValues{
-			{Row: "company", Value: "booyaa."},
-		})
+	// ctx.Update(updateService.Update, "users",
+	// 	[]*pb.MatchValues{
+	// 		{Row: "firstname", Operator: "=", Value: "Foo"},
+	// 		// {Row: "email", Operator: "=", Value: "yadiiiig.dev@gmail.com"},
+	// 	},
+	// 	[]*pb.UValues{
+	// 		{Row: "company", Value: "booyaa."},
+	// 	})
 	// fmt.Println("Deleting this user")
-	// ctx.Delete(deleteService.Delete, "users", []*pb.DValues{{Row: "firstname", Operator: "=", Value: "Yadiiiig"}, {Row: "email", Operator: "=", Value: "yadiiiig.dev@gmail.com"}})
+	ctx.Delete(deleteService.Delete, "users", []*pb.DValues{{Row: "firstname", Operator: "=", Value: "Foo"}})
 
 	// fmt.Println("Trying to get this user again")
 	// resQq, _ := ctx.SelectSpec(selectService.Select, "users", []string{"*"}, []*pb.SValues{{Operator: "=", Row: "firstname", Value: "Yadiiiig"}})
