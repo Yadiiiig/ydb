@@ -24,10 +24,10 @@ func Delete(d *reader.Drivers, in *pb.DeleteValues) int32 {
 		}
 		if tempBool {
 			fmt.Println(len(d.Database[in.GetTable()]), i)
-			if i != len(d.Database[in.GetTable()]) {
-				d.Database[in.GetTable()] = append(d.Database[in.GetTable()][:i], d.Database[in.GetTable()][i+1:]...)
-			} else {
+			if i >= len(d.Database[in.GetTable()]) {
 				d.Database[in.GetTable()] = d.Database[in.GetTable()][:len(d.Database[in.GetTable()])-1]
+			} else {
+				d.Database[in.GetTable()] = append(d.Database[in.GetTable()][:i], d.Database[in.GetTable()][i+1:]...)
 			}
 			amount += 1
 			d.Tracker += 1
