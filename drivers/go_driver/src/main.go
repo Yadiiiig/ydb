@@ -48,23 +48,23 @@ func main() {
 		fmt.Println(v)
 	}
 
-	rd, err := db.Table("users").Delete([][]string{
+	ru, err := db.Table("users").Update([][]string{
 		{"firstname", "=", "Foo"},
+	},
+		[][]string{
+			{"firstname", "Hello"},
+		},
+	).Run()
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(ru)
+
+	rd, err := db.Table("users").Delete([][]string{
+		{"firstname", "=", "Hello"},
 	}).Run()
 	if err != nil {
 		fmt.Println(err)
 	}
 	fmt.Println(rd)
-
-	var test []User
-	err = db.Table("users").Select(&test).Where([][]string{
-		{"firstname", "=", "Foo"},
-	}).Run()
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	for _, v := range test {
-		fmt.Println(v)
-	}
 }
