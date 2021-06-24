@@ -31,10 +31,20 @@ func main() {
 	}
 
 	r, err := db.Table("users").Insert(user).Run()
-	fmt.Println(r, err)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(r)
 
-	rs, err := db.Table("users").Select().Where([][]string{
+	var users []User
+	err = db.Table("users").Select(&users).Where([][]string{
 		{"firstname", "=", "Foo"},
 	}).Run()
-	fmt.Println(rs, err)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	for _, v := range users {
+		fmt.Println(v)
+	}
 }

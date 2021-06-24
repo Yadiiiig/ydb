@@ -8,6 +8,8 @@ type WhereValues struct {
 	Value    string
 }
 
+// Could probably make this a generic function, although will the where function
+// ever be used in another query?
 func (s SelectQuery) Where(values [][]string) *SelectQuery {
 	var wv []*pb.SValues
 	for _, v := range values {

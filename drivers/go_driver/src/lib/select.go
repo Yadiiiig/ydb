@@ -1,6 +1,8 @@
 package lib
 
 import (
+	"encoding/json"
+
 	pb "yadiiig.dev/ydb/go_driver/src/lib/proto"
 )
 
@@ -10,23 +12,37 @@ type SelectQuery struct {
 	Rows        []string
 	Limit       int
 	WhereValues []*pb.SValues
+	CastDest    interface{}
 }
 
-func (s TableQuery) Select(tables ...string) *SelectQuery {
+func (s TableQuery) Select(dest interface{}, tables ...string) *SelectQuery {
 	return &SelectQuery{
 		QueryType: "select",
 		Details:   &s,
 		Rows:      tables,
+		CastDest:  dest,
 	}
 }
 
-func (s SelectQuery) Run() (string, error) {
+func (s SelectQuery) Run() error {
 	// Still need to implement a .limit
-	// Being able to cast into a struct
 	if s.Rows == nil {
-		return s.Details.Conn.Ctx.SelectQuery(s.Details.Conn.Services.selectService, s.Details.Table, []string{"*"}, s.WhereValues)
+		r, err := s.Details.Conn.Ctx.SelectQuery(s.Details.Conn.Services.selectService, s.Details.Table, []string{"*"}, s.WhereValues)
+		if err != nil {
+			return err
+		}
+
+		err = json.Unmarshal([]byte(r), &s.CastDest)
+		return err
+
 	} else {
-		return s.Details.Conn.Ctx.SelectQuery(s.Details.Conn.Services.selectService, s.Details.Table, s.Rows, s.WhereValues)
+		r, err := s.Details.Conn.Ctx.SelectQuery(s.Details.Conn.Services.selectService, s.Details.Table, s.Rows, s.WhereValues)
+		if err != nil {
+			return err
+		}
+
+		err = json.Unmarshal([]byte(r), &s.CastDest)
+		return err
 	}
 }
 
