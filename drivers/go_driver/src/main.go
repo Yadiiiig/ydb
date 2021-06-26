@@ -48,7 +48,7 @@ func main() {
 		fmt.Println(v)
 	}
 
-	ru, err := db.Table("users").Update([][]string{
+	ru, amount, err := db.Table("users").Update([][]string{
 		{"firstname", "=", "Foo"},
 	},
 		[][]string{
@@ -58,13 +58,13 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(ru)
+	fmt.Println(ru, amount)
 
-	rd, err := db.Table("users").Delete([][]string{
+	rd, rdAmount, err := db.Table("users").Delete([][]string{
 		{"firstname", "=", "Hello"},
 	}).Run()
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(rd)
+	fmt.Println(rd, rdAmount)
 }

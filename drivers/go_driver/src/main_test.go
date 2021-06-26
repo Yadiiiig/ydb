@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"testing"
 
 	ydb "yadiiig.dev/ydb/go_driver/src/lib"
@@ -8,18 +9,54 @@ import (
 
 var db *ydb.Connection
 
-func init() {
-	db, _ = ydb.Connect("127.0.0.1:8008")
+// var bmData BenchmarkStruct
+// var bmArray []BenchmarkStruct
+var tmp []BenchmarkStruct
+
+type BenchmarkStruct struct {
+	ID        string
+	Name      string
+	Iteration string
 }
 
 func BenchmarkInsert(b *testing.B) {
+	db, _ = ydb.Connect("127.0.0.1:8008")
 	for i := 0; i < b.N; i++ {
-		user := User{
-			Firstname: "Foo",
-			Lastname:  "Bar",
-			Email:     "foo@bar.com",
-			Company:   "dev/null",
+		bmData := BenchmarkStruct{
+			Name:      "BenchmarkInsert",
+			Iteration: fmt.Sprint(i),
 		}
-		db.Table("users").Insert(user).Run()
+		db.Table("benchmarks").Insert(bmData).Run()
+	}
+}
+
+func BenchmarkSelect(b *testing.B) {
+	db, _ = ydb.Connect("127.0.0.1:8008")
+	for i := 0; i < b.N; i++ {
+		db.Table("benchmarks").Select(&tmp).Where([][]string{
+			{"iteration", "=", fmt.Sprint(i)},
+		}).Run()
+	}
+}
+
+func BenchmarkUpdate(b *testing.B) {
+	db, _ = ydb.Connect("127.0.0.1:8008")
+	for i := 0; i < b.N; i++ {
+		db.Table("benchmarks").Update([][]string{
+			{"iteration", "=", fmt.Sprint(i)},
+		},
+			[][]string{
+				{"iteration", fmt.Sprint(i)},
+			},
+		).Run()
+	}
+}
+
+func BenchmarkDelete(b *testing.B) {
+	db, _ = ydb.Connect("127.0.0.1:8008")
+	for i := 0; i < b.N; i++ {
+		db.Table("benchmarks").Delete([][]string{
+			{"iteration", "=", fmt.Sprint(i)},
+		}).Run()
 	}
 }
