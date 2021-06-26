@@ -29,11 +29,11 @@ func (s TableQuery) Update(match [][]string, update [][]string) *UpdateQuery {
 	}
 }
 
-func (s UpdateQuery) Run() (bool, error) {
+func (s UpdateQuery) Run() (bool, int32, error) {
 	return s.Details.Conn.Ctx.UpdateQuery(s.Details.Conn.Services.updateService, s.Details.Table, s.MatchValues, s.UpdateValues)
 }
 
-func (ctx Ctx) UpdateQuery(ec pb.UpdateClient, t string, v []*pb.MatchValues, d []*pb.UValues) (bool, error) {
+func (ctx Ctx) UpdateQuery(ec pb.UpdateClient, t string, v []*pb.MatchValues, d []*pb.UValues) (bool, int32, error) {
 	r, err := ec.UpdateQuery(ctx.Context, &pb.UpdateValues{Table: t, Matchers: v, Values: d})
-	return r.GetResult(), err
+	return r.GetResult(), r.GetAmount(), err
 }

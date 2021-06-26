@@ -21,11 +21,11 @@ func (s TableQuery) Delete(values [][]string) *DeleteQuery {
 	}
 }
 
-func (s DeleteQuery) Run() (bool, error) {
+func (s DeleteQuery) Run() (bool, int32, error) {
 	return s.Details.Conn.Ctx.DeleteQuery(s.Details.Conn.Services.deleteService, s.Details.Table, s.DeleteValues)
 }
 
-func (ctx Ctx) DeleteQuery(ec pb.DeleteClient, t string, v []*pb.DValues) (bool, error) {
+func (ctx Ctx) DeleteQuery(ec pb.DeleteClient, t string, v []*pb.DValues) (bool, int32, error) {
 	r, err := ec.DeleteQuery(ctx.Context, &pb.DeleteValues{Table: t, Values: v})
-	return r.GetResult(), err
+	return r.GetResult(), r.GetAmount(), err
 }
