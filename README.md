@@ -23,6 +23,85 @@ The database currently supports basic functionality:
 
 * Go driver [drivers/go_driver](https://github.com/Yadiiiig/ydb/tree/master/drivers/go_driver)
 
+## Drivers
+
+### Go driver
+
+Example:
+
+```go
+package main
+
+import (
+  "fmt"
+  "log"
+  "os"
+
+  ydb "yadiiig.dev/ydb/go_driver/src/lib"
+)
+
+type User struct {
+  ID        string
+  Firstname string
+  Lastname  string
+  Email     string
+  Company   string
+}
+
+func main() {
+  db, err := ydb.Connect("127.0.0.1:8008")
+  if err != nil {
+    log.Println(err)
+    os.Exit(1)
+  }
+
+  user := User{
+    Firstname: "Foo",
+    Lastname:  "Bar",
+    Email:     "foo@bar.com",
+    Company:   "dev/null",
+  }
+
+  r, err := db.Table("users").Insert(user).Run()
+  if err != nil {
+    fmt.Println(err)
+  }
+  fmt.Println(r)
+
+  var users []User
+  err = db.Table("users").Select(&users).Where([][]string{
+    {"firstname", "=", "Foo"},
+  }).Run()
+  if err != nil {
+    fmt.Println(err)
+  }
+
+  for _, v := range users {
+    fmt.Println(v)
+  }
+
+  ru, amount, err := db.Table("users").Update([][]string{
+    {"firstname", "=", "Foo"},
+  },
+    [][]string{
+      {"firstname", "Hello"},
+    },
+  ).Run()
+  if err != nil {
+    fmt.Println(err)
+  }
+  fmt.Println(ru, amount)
+
+  rd, rdAmount, err := db.Table("users").Delete([][]string{
+    {"firstname", "=", "Hello"},
+  }).Run()
+  if err != nil {
+  fmt.Println(err)
+  }
+  fmt.Println(rd, rdAmount)
+}
+```
+
 ## Current Benchmarks
 
 These are the current benchmarks, where select-, update- and delete queries can definitly be improved.
