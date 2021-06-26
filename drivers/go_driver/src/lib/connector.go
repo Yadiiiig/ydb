@@ -4,8 +4,8 @@ import (
 	"context"
 	"time"
 
+	pb "github.com/Yadiiiig/ydb/go_driver/src/lib/proto"
 	"google.golang.org/grpc"
-	pb "yadiiig.dev/ydb/go_driver/src/lib/proto"
 )
 
 type Connection struct {

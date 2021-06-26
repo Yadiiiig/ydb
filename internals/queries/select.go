@@ -6,9 +6,9 @@ import (
 	"reflect"
 	"strings"
 
-	pb "yadiiig.dev/ydb/internals/proto"
-	"yadiiig.dev/ydb/internals/reader"
-	utils "yadiiig.dev/ydb/internals/utils"
+	pb "github.com/Yadiiiig/ydb/internals/proto"
+	"github.com/Yadiiiig/ydb/internals/reader"
+	utils "github.com/Yadiiiig/ydb/internals/utils"
 )
 
 func Select(d *reader.Drivers, in *pb.SelectValues) string {

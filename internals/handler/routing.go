@@ -6,8 +6,8 @@ import (
 
 	"google.golang.org/grpc"
 
-	pb "yadiiig.dev/ydb/internals/proto"
-	reader "yadiiig.dev/ydb/internals/reader"
+	pb "github.com/Yadiiiig/ydb/internals/proto"
+	reader "github.com/Yadiiiig/ydb/internals/reader"
 )
 
 func NewGrpcServer(lis net.Listener, d *reader.Drivers) {

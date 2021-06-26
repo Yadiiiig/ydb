@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	ydb "yadiiig.dev/ydb/go_driver/src/lib"
+	ydb "github.com/Yadiiiig/ydb/go_driver/src/lib"
 )
 
 type User struct {

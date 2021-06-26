@@ -5,9 +5,9 @@ import (
 	"net"
 	"os"
 
-	"yadiiig.dev/ydb/internals/background"
-	"yadiiig.dev/ydb/internals/handler"
-	reader "yadiiig.dev/ydb/internals/reader"
+	"github.com/Yadiiiig/ydb/internals/background"
+	"github.com/Yadiiiig/ydb/internals/handler"
+	reader "github.com/Yadiiiig/ydb/internals/reader"
 )
 
 func main() {

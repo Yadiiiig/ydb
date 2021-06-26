@@ -3,9 +3,9 @@ package handler
 import (
 	"context"
 
-	pb "yadiiig.dev/ydb/internals/proto"
-	q "yadiiig.dev/ydb/internals/queries"
-	reader "yadiiig.dev/ydb/internals/reader"
+	pb "github.com/Yadiiiig/ydb/internals/proto"
+	q "github.com/Yadiiiig/ydb/internals/queries"
+	reader "github.com/Yadiiiig/ydb/internals/reader"
 )
 
 type deleteService struct {

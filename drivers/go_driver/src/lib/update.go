@@ -1,7 +1,7 @@
 package lib
 
 import (
-	pb "yadiiig.dev/ydb/go_driver/src/lib/proto"
+	pb "github.com/Yadiiiig/ydb/go_driver/src/lib/proto"
 )
 
 type UpdateQuery struct {

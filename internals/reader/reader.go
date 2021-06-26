@@ -9,7 +9,7 @@ import (
 	"reflect"
 	"strings"
 
-	utils "yadiiig.dev/ydb/internals/utils"
+	utils "github.com/Yadiiiig/ydb/internals/utils"
 )
 
 type DataContainer struct {

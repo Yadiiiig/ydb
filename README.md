@@ -37,7 +37,7 @@ import (
   "log"
   "os"
 
-  ydb "yadiiig.dev/ydb/go_driver/src/lib"
+  ydb "github.com/Yadiiiig/ydb/go_driver/src/lib"
 )
 
 type User struct {
@@ -110,14 +110,14 @@ Benchmarks are ran with one table having 10.000 entries.
 ```go
 goos: linux
 goarch: amd64
-pkg: yadiiig.dev/ydb/go_driver/src
+pkg: github.com/Yadiiiig/ydb/go_driver/src
 cpu: AMD Ryzen 7 3700X 8-Core Processor             
 BenchmarkInsert-16          9132            119983 ns/op | 0.11 ms
 BenchmarkSelect-16           561           2160552 ns/op | 2.16 ms
 BenchmarkUpdate-16           568           2087542 ns/op | 2.08 ms
 BenchmarkDelete-16           586           1991115 ns/op | 1.99 ms
 PASS
-ok      yadiiig.dev/ydb/go_driver/src   5.321s
+ok      github.com/Yadiiiig/ydb/go_driver/src   5.321s
 ```
 
 ## Upcoming features

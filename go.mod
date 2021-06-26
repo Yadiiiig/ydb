@@ -1,4 +1,4 @@
-module yadiiig.dev/ydb
+module github.com/Yadiiiig/ydb
 
 go 1.16
 

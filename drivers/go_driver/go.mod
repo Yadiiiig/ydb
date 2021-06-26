@@ -1,4 +1,4 @@
-module yadiiig.dev/ydb/go_driver
+module github.com/Yadiiiig/ydb/go_driver
 
 go 1.16
 

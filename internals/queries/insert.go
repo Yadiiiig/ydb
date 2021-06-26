@@ -5,10 +5,10 @@ import (
 	"reflect"
 	"strings"
 
+	pb "github.com/Yadiiiig/ydb/internals/proto"
+	"github.com/Yadiiiig/ydb/internals/reader"
+	utils "github.com/Yadiiiig/ydb/internals/utils"
 	"github.com/google/uuid"
-	pb "yadiiig.dev/ydb/internals/proto"
-	"yadiiig.dev/ydb/internals/reader"
-	utils "yadiiig.dev/ydb/internals/utils"
 )
 
 func Insert(d *reader.Drivers, in *pb.InsertValues) (bool, error) {

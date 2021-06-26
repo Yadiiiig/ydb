@@ -1,5 +1,5 @@
 syntax = "proto3";
-option go_package = "yadiiig.dev/ydb/internals/proto";
+option go_package = "github.com/Yadiiiig/ydb/internals/proto";
 
 service Update {
 	rpc UpdateQuery (UpdateValues) returns (UpdateResponse) {} 

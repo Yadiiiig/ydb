@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	ydb "yadiiig.dev/ydb/go_driver/src/lib"
+	ydb "github.com/Yadiiiig/ydb/go_driver/src/lib"
 )
 
 var db *ydb.Connection

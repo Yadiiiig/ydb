@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"time"
 
-	"yadiiig.dev/ydb/internals/reader"
-	"yadiiig.dev/ydb/internals/utils"
+	"github.com/Yadiiiig/ydb/internals/reader"
+	"github.com/Yadiiiig/ydb/internals/utils"
 )
 
 func BackgroundUpdating(d *reader.Drivers) {
