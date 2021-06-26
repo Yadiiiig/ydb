@@ -15,20 +15,42 @@ Afterwards you can import the drivers for the language you are using and use the
 
 The database currently supports basic functionality:
 
-* Select
-* Insert
-* Update
-* Delete
+* Basic database functionality:
+  * Select
+  * Insert
+  * Update
+  * Delete
+
+* Go driver [drivers/go_driver](https://github.com/Yadiiiig/ydb/tree/master/drivers/go_driver)
+
+## Current Benchmarks
+
+These are the current benchmarks, where select-, update- and delete queries can definitly be improved.
+Benchmarks are ran with one table having 10.000 entries.
+
+```go
+goos: linux
+goarch: amd64
+pkg: yadiiig.dev/ydb/go_driver/src
+cpu: AMD Ryzen 7 3700X 8-Core Processor             
+BenchmarkInsert-16          9132            119983 ns/op | 0.11 ms
+BenchmarkSelect-16           561           2160552 ns/op | 2.16 ms
+BenchmarkUpdate-16           568           2087542 ns/op | 2.08 ms
+BenchmarkDelete-16           586           1991115 ns/op | 1.99 ms
+PASS
+ok      yadiiig.dev/ydb/go_driver/src   5.321s
+```
 
 ## Upcoming features
 
+* Tests
+* Documentation
 * Allowing integers (This shouldn't take that long to implement)
 * Adding logging
 * Custom Decoder so .ydb files aren't actually just json file without the .json extension (same for structure)
 
 Starting on making a few drivers:
 
-* Go
 * Python
 * Java
 * Lua
