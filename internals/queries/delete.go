@@ -1,7 +1,6 @@
 package queries
 
 import (
-	"fmt"
 	"reflect"
 	"strings"
 
@@ -23,7 +22,6 @@ func Delete(d *reader.Drivers, in *pb.DeleteValues) int32 {
 			}
 		}
 		if tempBool {
-			fmt.Println(len(d.Database[in.GetTable()]), i)
 			if i >= len(d.Database[in.GetTable()]) {
 				d.Database[in.GetTable()] = d.Database[in.GetTable()][:len(d.Database[in.GetTable()])-1]
 			} else {
