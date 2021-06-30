@@ -39,7 +39,7 @@ func main() {
 
 	app.Action = func(c *cli.Context) error {
 		if c.String("action") == "run" {
-			d, err := reader.ReadData(c.String("path") + "data/")
+			d, err := reader.ReadData(c.String("path"))
 			if err != nil {
 				log.Println("Failed to read folder.")
 				return err

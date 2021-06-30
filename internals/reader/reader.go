@@ -35,6 +35,10 @@ type Drivers struct {
 }
 
 func ReadData(path string) (*Drivers, error) {
+	if path[len(path)-1:] != "/" {
+		path = path + "/"
+	}
+
 	var temp_data []TempData
 	file, err := os.OpenFile(path+"/structure/layout.json", os.O_RDONLY, 0)
 	if err != nil {
