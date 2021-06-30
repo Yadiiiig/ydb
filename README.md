@@ -23,6 +23,19 @@ The database currently supports basic functionality:
 
 * Go driver [drivers/go_driver](https://github.com/Yadiiiig/ydb/tree/master/drivers/go_driver)
 
+## Setup & run a database
+
+Compile this project:
+`go build -o ydb`
+
+Now you can add it to your path for easy access.
+
+Create a new database folder:
+`ydb --action create --path /home/user/Documents/projectname`
+
+Run the database:
+`ydb --action run --path /home/user/Documents/projectname/database`
+
 ## Drivers
 
 ### Go driver
