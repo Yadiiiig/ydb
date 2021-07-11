@@ -3,7 +3,7 @@ package lib
 import (
 	"encoding/json"
 
-	pb "github.com/Yadiiiig/ydb/go_driver/src/lib/proto"
+	pb "github.com/Yadiiiig/ydb/drivers/go_driver/src/lib/proto"
 )
 
 type SelectQuery struct {

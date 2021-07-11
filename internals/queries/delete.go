@@ -33,7 +33,3 @@ func Delete(d *reader.Drivers, in *pb.DeleteValues) int32 {
 	}
 	return amount
 }
-
-// d.Database[in.GetTable()] = append(d.Database[in.GetTable()][:i], d.Database[in.GetTable()][i+1:]...)
-// This code is temp because a few things still have to be figured out, e.g. multiple rows.
-// utils.UpdateFile(d.OpenFile, v, d.Layout[in.Table], in.GetTable())

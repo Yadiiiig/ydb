@@ -1,7 +1,7 @@
 package lib
 
 import (
-	pb "github.com/Yadiiiig/ydb/go_driver/src/lib/proto"
+	pb "github.com/Yadiiiig/ydb/drivers/go_driver/src/lib/proto"
 )
 
 type InsertQuery struct {
