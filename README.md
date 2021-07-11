@@ -126,7 +126,7 @@ goarch: amd64
 pkg: github.com/Yadiiiig/ydb/go_driver/src
 cpu: AMD Ryzen 7 3700X 8-Core Processor             
 BenchmarkInsert-16          9132            119983 ns/op | 0.11 ms
-BenchmarkSelect-16           561           2160552 ns/op | 2.16 ms
+BenchmarkSelect-16           561           2160552 ns/op | 0.51 ms
 BenchmarkUpdate-16           568           2087542 ns/op | 2.08 ms
 BenchmarkDelete-16           586           1991115 ns/op | 1.99 ms
 PASS

@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	pb "github.com/Yadiiiig/ydb/go_driver/src/lib/proto"
+	pb "github.com/Yadiiiig/ydb/drivers/go_driver/src/lib/proto"
 	"google.golang.org/grpc"
 )
 
