@@ -48,7 +48,7 @@ func ServiceSetup(c *grpc.ClientConn) *Services {
 }
 
 func ContextSetup() *Ctx {
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	return &Ctx{
 		Context: ctx,
 		Cancel:  cancel,
