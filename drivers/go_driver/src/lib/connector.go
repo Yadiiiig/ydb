@@ -34,7 +34,7 @@ func Connect(address string) (*Connection, error) {
 	return &Connection{
 		Conn:     conn,
 		Services: ServiceSetup(conn),
-		Ctx:      ContextSetup(),
+		// Ctx:      ContextSetup(),
 	}, nil
 }
 
