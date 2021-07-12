@@ -1,6 +1,7 @@
 package lib
 
 import (
+	"context"
 	"encoding/json"
 
 	pb "github.com/Yadiiiig/ydb/drivers/go_driver/src/lib/proto"
@@ -25,7 +26,7 @@ func (s TableQuery) Select(dest interface{}, tables ...string) *SelectQuery {
 func (s SelectQuery) Run() error {
 	// Still need to implement a .limit
 	if s.Rows == nil {
-		r, err := s.Details.Conn.Ctx.SelectQuery(s.Details.Conn.Services.selectService, s.Details.Table, []string{"*"}, s.WhereValues)
+		r, err := SelectQueryF(s.Details.Conn.Services.selectService, s.Details.Table, []string{"*"}, s.WhereValues)
 		if err != nil {
 			return err
 		}
@@ -34,7 +35,7 @@ func (s SelectQuery) Run() error {
 		return err
 
 	} else {
-		r, err := s.Details.Conn.Ctx.SelectQuery(s.Details.Conn.Services.selectService, s.Details.Table, s.Rows, s.WhereValues)
+		r, err := SelectQueryF(s.Details.Conn.Services.selectService, s.Details.Table, s.Rows, s.WhereValues)
 		if err != nil {
 			return err
 		}
@@ -44,7 +45,7 @@ func (s SelectQuery) Run() error {
 	}
 }
 
-func (ctx Ctx) SelectQuery(ec pb.SelectClient, t string, f []string, v []*pb.SValues) (string, error) {
-	r, err := ec.SelectQuery(ctx.Context, &pb.SelectValues{Table: t, Fields: f, Values: v})
+func SelectQueryF(ec pb.SelectClient, t string, f []string, v []*pb.SValues) (string, error) {
+	r, err := ec.SelectQuery(context.Background(), &pb.SelectValues{Table: t, Fields: f, Values: v})
 	return r.GetResult(), err
 }

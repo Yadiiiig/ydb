@@ -11,7 +11,7 @@ import (
 type Connection struct {
 	Conn     *grpc.ClientConn
 	Services *Services
-	Ctx      *Ctx
+	//Ctx      *Ctx
 }
 
 type Services struct {

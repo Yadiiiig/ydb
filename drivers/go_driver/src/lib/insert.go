@@ -1,6 +1,8 @@
 package lib
 
 import (
+	"context"
+
 	pb "github.com/Yadiiiig/ydb/drivers/go_driver/src/lib/proto"
 )
 
@@ -23,10 +25,10 @@ func (s TableQuery) Insert(values interface{}) *InsertQuery {
 }
 
 func (s InsertQuery) Run() (bool, error) {
-	return s.Details.Conn.Ctx.InsertQuery(s.Details.Conn.Services.insertService, s.Details.Table, s.InsertValues)
+	return InsertQueryF(s.Details.Conn.Services.insertService, s.Details.Table, s.InsertValues)
 }
 
-func (ctx Ctx) InsertQuery(ec pb.InsertClient, t string, v []*pb.IValues) (bool, error) {
-	r, err := ec.InsertQuery(ctx.Context, &pb.InsertValues{Table: t, Values: v})
+func InsertQueryF(ec pb.InsertClient, t string, v []*pb.IValues) (bool, error) {
+	r, err := ec.InsertQuery(context.Background(), &pb.InsertValues{Table: t, Values: v})
 	return r.GetResult(), err
 }
