@@ -135,6 +135,8 @@ ok      github.com/Yadiiiig/ydb/go_driver/src   5.321s
 
 ## Upcoming features
 
+* Finding/Implementing a search algorythm
+* Adding pool connections (which is currently a bug)
 * Tests
 * Documentation
 * Allowing integers (This shouldn't take that long to implement)
