@@ -4,52 +4,52 @@ import (
 	"encoding/json"
 	"fmt"
 	"reflect"
+	"sort"
 	"strings"
-	"sync"
 
 	pb "github.com/Yadiiiig/ydb/internals/proto"
 	"github.com/Yadiiiig/ydb/internals/reader"
-	utils "github.com/Yadiiiig/ydb/internals/utils"
+	"github.com/Yadiiiig/ydb/internals/utils"
 )
 
 func Select(d *reader.Drivers, in *pb.SelectValues) string {
+	tl := d.Database[in.GetTable()]
 	result := []interface{}{}
-	amount := len(d.Database[in.GetTable()])
-	var wg sync.WaitGroup
 
-	for i := 0; amount > 0; i += 1000 {
-		amount -= 1000
-		if amount > 0 {
-			wg.Add(1)
-			go selector(d, in, &result, i, i+1000, &wg)
-		} else {
-			tmp := 1000 + amount
-			wg.Add(1)
-			go selector(d, in, &result, i, i+tmp, &wg)
-		}
-	}
-	wg.Wait()
+	selector(tl, in, &result)
+
 	r, _ := json.Marshal(result)
 	return string(r)
 }
 
-func selector(d *reader.Drivers, in *pb.SelectValues, result *[]interface{}, x, y int, wg *sync.WaitGroup) {
-	defer wg.Done()
-	for _, v := range d.Database[in.GetTable()][x:y] {
+func selector(d []interface{}, in *pb.SelectValues, result *[]interface{}) {
+	i := sort.Search(len(d), func(i int) bool {
+		return utils.OperatorQuery(reflect.ValueOf(d[i]).Elem().FieldByName(strings.Title(in.GetValues()[0].Row)).String(), in.GetValues()[0].Value, in.GetValues()[0].Operator)
+	})
+
+	if i < len(d) && utils.OperatorQuery(reflect.ValueOf(d[i]).Elem().FieldByName(strings.Title(in.GetValues()[0].Row)).String(), in.GetValues()[0].Value, in.GetValues()[0].Operator) {
 		tempBool := true
-		for _, vq := range in.GetValues() {
-			if !utils.OperatorQuery(reflect.ValueOf(v).Elem().FieldByName(strings.Title(vq.Row)).String(), vq.Value, vq.Operator) {
+		for _, v := range in.GetValues() {
+			if !utils.OperatorQuery(reflect.ValueOf(d[i]).Elem().FieldByName(strings.Title(v.Row)).String(), v.Value, v.Operator) {
+				fmt.Println(false)
 				tempBool = false
 				break
 			}
 		}
 		if tempBool {
 			if len(in.GetFields()) == 1 && in.GetFields()[0] == "*" {
-				*result = append(*result, v)
+				*result = append(*result, d[i])
 			} else {
-				*result = append(*result, appendResult(v, in.GetFields()))
+				*result = append(*result, appendResult(d[i], in.GetFields()))
 			}
+
+			var value interface{} = &d
+			sp := value.(*[]interface{})
+			*sp = append((*sp)[:i], (*sp)[i+1:]...)
 		}
+		selector(d, in, result)
+	} else {
+		return
 	}
 }
 
