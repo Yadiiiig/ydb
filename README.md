@@ -126,11 +126,23 @@ goarch: amd64
 pkg: github.com/Yadiiiig/ydb/go_driver/src
 cpu: AMD Ryzen 7 3700X 8-Core Processor             
 BenchmarkInsert-16          9132            119983 ns/op | 0.11 ms
-BenchmarkSelect-16           561           2160552 ns/op | 0.51 ms
+BenchmarkSelect-16          12798            87821 ns/op | 0.08 ms
 BenchmarkUpdate-16           568           2087542 ns/op | 2.08 ms
 BenchmarkDelete-16           586           1991115 ns/op | 1.99 ms
 PASS
 ok      github.com/Yadiiiig/ydb/go_driver/src   5.321s
+```
+
+Benchmark for 1.000.000 entries in one table.
+
+```go
+goos: linux
+goarch: amd64
+pkg: github.com/Yadiiiig/ydb/drivers/go_driver/src
+cpu: AMD Ryzen 7 3700X 8-Core Processor             
+BenchmarkSelect-16         10000            300390 ns/op | 0.30 ms
+PASS
+ok      github.com/Yadiiiig/ydb/drivers/go_driver/src   3.020s
 ```
 
 ## Upcoming features
