@@ -1,7 +1,9 @@
 package queries
 
 import (
+	"fmt"
 	"reflect"
+	"sort"
 	"strings"
 
 	pb "github.com/Yadiiiig/ydb/internals/proto"
@@ -11,25 +13,39 @@ import (
 
 func Delete(d *reader.Drivers, in *pb.DeleteValues) int32 {
 	var amount int32 = 0
-	for i, v := range d.Database[in.GetTable()] {
-		tempBool := false
-		for _, vq := range in.GetValues() {
-			if utils.OperatorQuery(reflect.ValueOf(v).Elem().FieldByName(strings.Title(vq.Row)).String(), vq.Value, vq.Operator) {
-				tempBool = true
-			} else {
+	deletor(d, d.Database[in.GetTable()], in, &amount)
+	return amount
+}
+
+func deletor(dTable *reader.Drivers, d []interface{}, in *pb.DeleteValues, amount *int32) {
+	i := sort.Search(len(d), func(i int) bool {
+		return utils.OperatorQuery(reflect.ValueOf(d[i]).Elem().FieldByName(strings.Title(in.GetValues()[0].Row)).String(), in.GetValues()[0].Value, in.GetValues()[0].Operator)
+	})
+
+	if i < len(d) && utils.OperatorQuery(reflect.ValueOf(d[i]).Elem().FieldByName(strings.Title(in.GetValues()[0].Row)).String(), in.GetValues()[0].Value, in.GetValues()[0].Operator) {
+		tempBool := true
+		for _, v := range in.GetValues() {
+			if !utils.OperatorQuery(reflect.ValueOf(d[i]).Elem().FieldByName(strings.Title(v.Row)).String(), v.Value, v.Operator) {
+				fmt.Println(false)
 				tempBool = false
 				break
 			}
 		}
+
 		if tempBool {
-			if i >= len(d.Database[in.GetTable()]) {
-				d.Database[in.GetTable()] = d.Database[in.GetTable()][:len(d.Database[in.GetTable()])-1]
+			if i >= len(dTable.Database[in.GetTable()]) {
+				dTable.Database[in.GetTable()] = dTable.Database[in.GetTable()][:len(dTable.Database[in.GetTable()])-1]
 			} else {
-				d.Database[in.GetTable()] = append(d.Database[in.GetTable()][:i], d.Database[in.GetTable()][i+1:]...)
+				dTable.Database[in.GetTable()] = append(dTable.Database[in.GetTable()][:i], dTable.Database[in.GetTable()][i+1:]...)
 			}
-			amount += 1
-			d.Tracker += 1
+			*amount += 1
+			dTable.Tracker += 1
+
+			var value interface{} = &d
+			sp := value.(*[]interface{})
+			*sp = append((*sp)[:i], (*sp)[i+1:]...)
 		}
+
+		deletor(dTable, d, in, amount)
 	}
-	return amount
 }

@@ -1,0 +1,9 @@
+{
+    "tables": {
+        "benchmarks": [
+            {"name": "id", "type": "string"},
+            {"name": "name", "type": "string"},
+            {"name": "iteration", "type": "string"}
+        ]
+    }
+}

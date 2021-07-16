@@ -2,6 +2,7 @@ package queries
 
 import (
 	"reflect"
+	"sort"
 	"strings"
 
 	pb "github.com/Yadiiiig/ydb/internals/proto"
@@ -11,24 +12,36 @@ import (
 
 func Update(d *reader.Drivers, in *pb.UpdateValues) int32 {
 	var amount int32 = 0
-	for _, v := range d.Database[in.GetTable()] {
-		tempBool := false
-		for _, vq := range in.GetMatchers() {
-			if utils.OperatorQuery(reflect.ValueOf(v).Elem().FieldByName(strings.Title(vq.Row)).String(), vq.Value, vq.Operator) {
-				tempBool = true
-			} else {
+	updator(d, d.Database[in.GetTable()], in, &amount)
+	return amount
+}
+
+func updator(dTable *reader.Drivers, d []interface{}, in *pb.UpdateValues, amount *int32) {
+	i := sort.Search(len(d), func(i int) bool {
+		return utils.OperatorQuery(reflect.ValueOf(d[i]).Elem().FieldByName(strings.Title(in.GetMatchers()[0].Row)).String(), in.GetMatchers()[0].Value, in.GetMatchers()[0].Operator)
+	})
+
+	if i < len(d) && utils.OperatorQuery(reflect.ValueOf(d[i]).Elem().FieldByName(strings.Title(in.GetMatchers()[0].Row)).String(), in.GetMatchers()[0].Value, in.GetMatchers()[0].Operator) {
+		tempBool := true
+		for _, v := range in.GetMatchers() {
+			if !utils.OperatorQuery(reflect.ValueOf(d[i]).Elem().FieldByName(strings.Title(v.Row)).String(), v.Value, v.Operator) {
 				tempBool = false
 				break
 			}
 		}
+
 		if tempBool {
-			// Should a field be updated even tho it has the exact same value?
 			for _, vz := range in.GetValues() {
-				reflect.ValueOf(v).Elem().FieldByName(strings.Title(vz.Row)).SetString(vz.Value)
+				reflect.ValueOf(dTable.Database[in.GetTable()][i]).Elem().FieldByName(strings.Title(vz.Row)).SetString(vz.Value)
 			}
-			amount += 1
-			d.Tracker += 1
+			*amount += 1
+			dTable.Tracker += 1
+
+			var value interface{} = &d
+			sp := value.(*[]interface{})
+			*sp = append((*sp)[:i], (*sp)[i+1:]...)
 		}
+
+		updator(dTable, d, in, amount)
 	}
-	return amount
 }
