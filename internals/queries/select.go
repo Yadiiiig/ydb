@@ -31,7 +31,6 @@ func selector(d []interface{}, in *pb.SelectValues, result *[]interface{}) {
 		tempBool := true
 		for _, v := range in.GetValues() {
 			if !utils.OperatorQuery(reflect.ValueOf(d[i]).Elem().FieldByName(strings.Title(v.Row)).String(), v.Value, v.Operator) {
-				fmt.Println(false)
 				tempBool = false
 				break
 			}
@@ -48,8 +47,6 @@ func selector(d []interface{}, in *pb.SelectValues, result *[]interface{}) {
 			*sp = append((*sp)[:i], (*sp)[i+1:]...)
 		}
 		selector(d, in, result)
-	} else {
-		return
 	}
 }
 
