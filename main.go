@@ -9,6 +9,7 @@ import (
 	"github.com/Yadiiiig/ydb/internals/background"
 	"github.com/Yadiiiig/ydb/internals/creator"
 	"github.com/Yadiiiig/ydb/internals/handler"
+	"github.com/Yadiiiig/ydb/internals/inspector"
 	"github.com/Yadiiiig/ydb/internals/reader"
 	"github.com/urfave/cli/v2"
 )
@@ -53,15 +54,20 @@ func main() {
 
 			background.ExitHandler(d)
 			background.BackgroundUpdating(d)
+
 			log.Println("Database is ready to Go. Hosted on port:", fmt.Sprint(c.Int("port")))
 			handler.NewGrpcServer(lis, d)
+
 		} else if c.String("action") == "create" {
 			err := creator.Create(c.String("path"))
 			if err != nil {
 				return err
 			}
 			log.Println("Created a new database at: " + c.String("path"))
+		} else if c.String("action") == "inspect" {
+			inspector.RunInspector()
 		}
+
 		return nil
 	}
 
